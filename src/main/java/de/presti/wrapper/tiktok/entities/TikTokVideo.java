@@ -13,7 +13,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Video {
+public class TikTokVideo {
 
     /**
      * The ID of the Video.
@@ -113,13 +113,13 @@ public class Video {
     /**
      * The covers of the Video.
      */
-    Thumbnails cover;
+    TikTokThumbnail cover;
 
     /**
      * Constructor to create a Video from a JsonObject.
      * @param item The JsonObject to create the Video from.
      */
-    public Video(JsonObject item) {
+    public TikTokVideo(JsonObject item) {
         super();
 
         id = item.has("id") ? item.getAsJsonPrimitive("id").getAsString() : "";
@@ -153,7 +153,7 @@ public class Video {
             resolution = itemVideo.has("ratio") ? itemVideo.getAsJsonPrimitive("ratio").getAsString() : "";
 
             if (itemVideo.has("cover")) {
-                cover = new Thumbnails(itemVideo.getAsJsonPrimitive("cover").getAsString(),
+                cover = new TikTokThumbnail(itemVideo.getAsJsonPrimitive("cover").getAsString(),
                         itemVideo.getAsJsonPrimitive("originCover").getAsString(),
                         itemVideo.getAsJsonPrimitive("dynamicCover").getAsString());
             }

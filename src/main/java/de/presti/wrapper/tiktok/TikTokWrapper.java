@@ -2,8 +2,8 @@ package de.presti.wrapper.tiktok;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import de.presti.wrapper.tiktok.entities.User;
-import de.presti.wrapper.tiktok.entities.Video;
+import de.presti.wrapper.tiktok.entities.TikTokUser;
+import de.presti.wrapper.tiktok.entities.TikTokVideo;
 import de.presti.wrapper.tiktok.exceptions.MissingDataInfoException;
 import lombok.Getter;
 import org.jsoup.Connection;
@@ -36,12 +36,12 @@ public class TikTokWrapper {
      * @return The User.
      * @throws IOException If the connection to the website fails.
      */
-    public static User getUser(String name, boolean parseVideos) throws IOException {
+    public static TikTokUser getUser(String name, boolean parseVideos) throws IOException {
         if (!name.startsWith("@")) {
             name = "@" + name;
         }
 
-        return new User(parseElement(name), parseVideos);
+        return new TikTokUser(parseElement(name), parseVideos);
     }
 
     /**
@@ -50,7 +50,7 @@ public class TikTokWrapper {
      * @return The User.
      * @throws IOException If the connection to the website fails.
      */
-    public static User getUser(String name) throws IOException {
+    public static TikTokUser getUser(String name) throws IOException {
         return getUser(name, true);
     }
 
@@ -61,8 +61,8 @@ public class TikTokWrapper {
      * @return The User.
      * @throws IOException If the connection to the website fails.
      */
-    public static User getUser(long id, boolean parseVideos) throws IOException {
-        return new User(parseElement("share/user/" + id), parseVideos);
+    public static TikTokUser getUser(long id, boolean parseVideos) throws IOException {
+        return new TikTokUser(parseElement("share/user/" + id), parseVideos);
     }
 
     /**
@@ -71,7 +71,7 @@ public class TikTokWrapper {
      * @return The User.
      * @throws IOException If the connection to the website fails.
      */
-    public static User getUser(long id) throws IOException {
+    public static TikTokUser getUser(long id) throws IOException {
         return getUser(id, true);
     }
 
@@ -82,12 +82,12 @@ public class TikTokWrapper {
      * @return The Video.
      * @throws IOException If the connection to the website fails.
      */
-    public static Video getVideo(String user, String id) throws IOException {
+    public static TikTokVideo getVideo(String user, String id) throws IOException {
         if (!user.startsWith("@")) {
             user = "@" + user;
         }
 
-        return new Video(parseElement(user + "/video/" + id));
+        return new TikTokVideo(parseElement(user + "/video/" + id));
     }
 
     /**
@@ -96,8 +96,8 @@ public class TikTokWrapper {
      * @return The Video.
      * @throws IOException If the connection to the website fails.
      */
-    public static Video getVideo(String id) throws IOException {
-        return new Video(parseElement("share/video/" + id));
+    public static TikTokVideo getVideo(String id) throws IOException {
+        return new TikTokVideo(parseElement("share/video/" + id));
     }
 
     /**

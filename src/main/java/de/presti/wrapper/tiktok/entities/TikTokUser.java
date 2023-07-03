@@ -16,7 +16,7 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class TikTokUser {
 
     /**
      * The ID of the User.
@@ -56,7 +56,7 @@ public class User {
     /**
      * The Avatar of the User.
      */
-    Thumbnails avatar;
+    TikTokThumbnail avatar;
 
     /**
      * Indicator if the User is verified.
@@ -81,13 +81,13 @@ public class User {
     /**
      * The Posts of the User.
      */
-    List<Video> posts = new ArrayList<>();
+    List<TikTokVideo> posts = new ArrayList<>();
 
     /**
      * Constructor for the User.
      * @param jsonObject The JsonObject to parse the User from.
      */
-    public User(JsonObject jsonObject) {
+    public TikTokUser(JsonObject jsonObject) {
         this(jsonObject, true);
     }
 
@@ -96,7 +96,7 @@ public class User {
      * @param jsonObject The JsonObject to parse the User from.
      * @param parseVideos If the Videos should also be parsed/loaded into the Object.
      */
-    public User(JsonObject jsonObject, boolean parseVideos) {
+    public TikTokUser(JsonObject jsonObject, boolean parseVideos) {
         super();
 
         if (jsonObject.has("UserModule")) {
@@ -111,7 +111,7 @@ public class User {
                     name = user.has("uniqueId") ? user.getAsJsonPrimitive("uniqueId").getAsString() : "";
                     bio = user.has("signature") ? user.getAsJsonPrimitive("signature").getAsString() : "";
                     avatar = user.has("avatarLarger") ?
-                            new Thumbnails(user.getAsJsonPrimitive("avatarLarger").getAsString(),
+                            new TikTokThumbnail(user.getAsJsonPrimitive("avatarLarger").getAsString(),
                                     user.getAsJsonPrimitive("avatarMedium").getAsString(),
                                     user.getAsJsonPrimitive("avatarThumb").getAsString()) :
                             null;
@@ -140,7 +140,7 @@ public class User {
             if (itemModule.isEmpty()) return;
 
             for (String key : itemModule.keySet()) {
-                posts.add(new Video(itemModule.getAsJsonObject(key)));
+                posts.add(new TikTokVideo(itemModule.getAsJsonObject(key)));
             }
         }
     }

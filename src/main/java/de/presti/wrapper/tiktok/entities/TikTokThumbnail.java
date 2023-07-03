@@ -12,7 +12,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Thumbnails {
+public class TikTokThumbnail {
 
     /**
      * The Url of the small Thumbnail.
