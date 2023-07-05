@@ -127,7 +127,7 @@ public class TikTokVideo {
         description = item.has("desc") ? item.getAsJsonPrimitive("desc").getAsString() : "";
         author = item.has("author") ? item.getAsJsonPrimitive("author").getAsString() : "";
 
-        creationTime = item.has("creationTime") ? item.getAsJsonPrimitive("creationTime").getAsLong() : 0;
+        creationTime = item.has("createTime") ? item.getAsJsonPrimitive("createTime").getAsLong() : 0;
 
         original = item.has("originalItem") && item.getAsJsonPrimitive("originalItem").getAsBoolean();
         official = item.has("officialItem") && item.getAsJsonPrimitive("officialItem").getAsBoolean();
