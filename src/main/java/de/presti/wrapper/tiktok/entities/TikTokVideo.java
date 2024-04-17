@@ -139,47 +139,51 @@ public class TikTokVideo {
                 if (item.has("itemStruct")) {
                     item = item.getAsJsonObject("itemStruct");
 
-                    id = item.has("id") ? item.getAsJsonPrimitive("id").getAsString() : "";
-
-                    description = item.has("desc") ? item.getAsJsonPrimitive("desc").getAsString() : "";
-                    if (item.has("author")) {
-                        author = item.getAsJsonObject("author").has("uniqueId") ? item.getAsJsonObject("author").getAsJsonPrimitive("uniqueId").getAsString() : "";
-                    }
-
-                    creationTime = item.has("createTime") ? item.getAsJsonPrimitive("createTime").getAsLong() : 0;
-
-                    original = item.has("originalItem") && item.getAsJsonPrimitive("originalItem").getAsBoolean();
-                    official = item.has("officialItem") && item.getAsJsonPrimitive("officialItem").getAsBoolean();
-                    secret = item.has("secret") && item.getAsJsonPrimitive("secret").getAsBoolean();
-                    forFriend = item.has("forFriend") && item.getAsJsonPrimitive("forFriend").getAsBoolean();
-                    isPrivate = item.has("privateItem") && item.getAsJsonPrimitive("privateItem").getAsBoolean();
-                    canDuet = item.has("duetEnabled") && item.getAsJsonPrimitive("duetEnabled").getAsBoolean();
-                    canStitch = item.has("stitchEnabled") && item.getAsJsonPrimitive("stitchEnabled").getAsBoolean();
-                    canShare = item.has("shareEnabled") && item.getAsJsonPrimitive("shareEnabled").getAsBoolean();
-                    location = item.has("locationCreated") ? item.getAsJsonPrimitive("locationCreated").getAsString() : "";
-
-                    if (item.has("stats")) {
-                        JsonObject itemStats = item.getAsJsonObject("stats");
-                        playCount = itemStats.has("playCount") ? itemStats.getAsJsonPrimitive("playCount").getAsLong() : 0;
-                        shareCount = itemStats.has("shareCount") ? itemStats.getAsJsonPrimitive("shareCount").getAsLong() : 0;
-                        commentCount = itemStats.has("commentCount") ? itemStats.getAsJsonPrimitive("commentCount").getAsLong() : 0;
-                        likeCount = itemStats.has("diggCount") ? itemStats.getAsJsonPrimitive("diggCount").getAsLong() : 0;
-                    }
-
-                    if (item.has("video")) {
-                        JsonObject itemVideo = item.getAsJsonObject("video");
-                        duration = itemVideo.has("duration") ? itemVideo.getAsJsonPrimitive("duration").getAsLong() : 0;
-                        resolution = itemVideo.has("ratio") ? itemVideo.getAsJsonPrimitive("ratio").getAsString() : "";
-
-                        if (itemVideo.has("cover")) {
-                            cover = new TikTokThumbnail(itemVideo.getAsJsonPrimitive("cover").getAsString(),
-                                    itemVideo.getAsJsonPrimitive("originCover").getAsString(),
-                                    itemVideo.getAsJsonPrimitive("dynamicCover").getAsString());
-                        }
-                    }
+                    parseFromStructure(item);
                 }
             } else {
                 throw new MissingDataInfoException("Video not found");
+            }
+        }
+    }
+
+    private void parseFromStructure(JsonObject item) {
+        id = item.has("id") ? item.getAsJsonPrimitive("id").getAsString() : "";
+
+        description = item.has("desc") ? item.getAsJsonPrimitive("desc").getAsString() : "";
+        if (item.has("author")) {
+            author = item.getAsJsonObject("author").has("uniqueId") ? item.getAsJsonObject("author").getAsJsonPrimitive("uniqueId").getAsString() : "";
+        }
+
+        creationTime = item.has("createTime") ? item.getAsJsonPrimitive("createTime").getAsLong() : 0;
+
+        original = item.has("originalItem") && item.getAsJsonPrimitive("originalItem").getAsBoolean();
+        official = item.has("officialItem") && item.getAsJsonPrimitive("officialItem").getAsBoolean();
+        secret = item.has("secret") && item.getAsJsonPrimitive("secret").getAsBoolean();
+        forFriend = item.has("forFriend") && item.getAsJsonPrimitive("forFriend").getAsBoolean();
+        isPrivate = item.has("privateItem") && item.getAsJsonPrimitive("privateItem").getAsBoolean();
+        canDuet = item.has("duetEnabled") && item.getAsJsonPrimitive("duetEnabled").getAsBoolean();
+        canStitch = item.has("stitchEnabled") && item.getAsJsonPrimitive("stitchEnabled").getAsBoolean();
+        canShare = item.has("shareEnabled") && item.getAsJsonPrimitive("shareEnabled").getAsBoolean();
+        location = item.has("locationCreated") ? item.getAsJsonPrimitive("locationCreated").getAsString() : "";
+
+        if (item.has("stats")) {
+            JsonObject itemStats = item.getAsJsonObject("stats");
+            playCount = itemStats.has("playCount") ? itemStats.getAsJsonPrimitive("playCount").getAsLong() : 0;
+            shareCount = itemStats.has("shareCount") ? itemStats.getAsJsonPrimitive("shareCount").getAsLong() : 0;
+            commentCount = itemStats.has("commentCount") ? itemStats.getAsJsonPrimitive("commentCount").getAsLong() : 0;
+            likeCount = itemStats.has("diggCount") ? itemStats.getAsJsonPrimitive("diggCount").getAsLong() : 0;
+        }
+
+        if (item.has("video")) {
+            JsonObject itemVideo = item.getAsJsonObject("video");
+            duration = itemVideo.has("duration") ? itemVideo.getAsJsonPrimitive("duration").getAsLong() : 0;
+            resolution = itemVideo.has("ratio") ? itemVideo.getAsJsonPrimitive("ratio").getAsString() : "";
+
+            if (itemVideo.has("cover")) {
+                cover = new TikTokThumbnail(itemVideo.getAsJsonPrimitive("cover").getAsString(),
+                        itemVideo.getAsJsonPrimitive("originCover").getAsString(),
+                        itemVideo.getAsJsonPrimitive("dynamicCover").getAsString());
             }
         }
     }

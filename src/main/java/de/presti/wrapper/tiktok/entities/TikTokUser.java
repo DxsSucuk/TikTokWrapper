@@ -1,5 +1,7 @@
 package de.presti.wrapper.tiktok.entities;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import de.presti.wrapper.tiktok.exceptions.MissingDataInfoException;
 import lombok.AllArgsConstructor;
@@ -139,13 +141,13 @@ public class TikTokUser {
                 }
 
 
-                if (jsonObject.has("itemList") && parseVideos) {
-                    JsonObject itemModule = jsonObject.getAsJsonObject("itemList");
+                if (userInfo.has("itemList") && parseVideos) {
+                    JsonArray itemModule = userInfo.getAsJsonArray("itemList");
 
                     if (itemModule.isEmpty()) return;
 
-                    for (String key : itemModule.keySet()) {
-                        posts.add(new TikTokVideo(itemModule.getAsJsonObject(key)));
+                    for (JsonElement key : itemModule) {
+                        posts.add(new TikTokVideo(key.getAsJsonObject()));
                     }
                 }
             } else {
