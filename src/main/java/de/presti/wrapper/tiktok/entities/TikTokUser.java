@@ -1,6 +1,7 @@
 package de.presti.wrapper.tiktok.entities;
 
 import com.google.gson.JsonObject;
+import de.presti.wrapper.tiktok.exceptions.MissingDataInfoException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -85,6 +86,7 @@ public class TikTokUser {
 
     /**
      * Constructor for the User.
+     *
      * @param jsonObject The JsonObject to parse the User from.
      */
     public TikTokUser(JsonObject jsonObject) {
@@ -93,19 +95,26 @@ public class TikTokUser {
 
     /**
      * Constructor for the User.
-     * @param jsonObject The JsonObject to parse the User from.
+     *
+     * @param jsonObject  The JsonObject to parse the User from.
      * @param parseVideos If the Videos should also be parsed/loaded into the Object.
      */
     public TikTokUser(JsonObject jsonObject, boolean parseVideos) {
         super();
 
-        if (jsonObject.has("UserModule")) {
-            JsonObject userModule = jsonObject.getAsJsonObject("UserModule");
-            if (userModule.has("users")) {
-                JsonObject user = userModule.getAsJsonObject("users");
+        if (jsonObject == null) return;
 
-                if (user.size() == 1) {
-                    user = user.getAsJsonObject(user.keySet().iterator().next());
+        if (jsonObject.has("webapp.user-detail")) {
+            JsonObject userDetail = jsonObject.getAsJsonObject("webapp.user-detail");
+            if (userDetail.has("statusCode") && userDetail.getAsJsonPrimitive("statusCode").getAsInt() != 0) {
+                throw new MissingDataInfoException("User not found");
+            }
+
+            if (userDetail.has("userInfo")) {
+                JsonObject userInfo = userDetail.getAsJsonObject("userInfo");
+
+                if (userInfo.has("user")) {
+                    JsonObject user = userInfo.getAsJsonObject("user");
                     id = user.has("id") ? user.getAsJsonPrimitive("id").getAsString() : "";
                     displayName = user.has("nickname") ? user.getAsJsonPrimitive("nickname").getAsString() : "";
                     name = user.has("uniqueId") ? user.getAsJsonPrimitive("uniqueId").getAsString() : "";
@@ -120,28 +129,30 @@ public class TikTokUser {
                     isPrivate = user.has("privateAccount") && user.getAsJsonPrimitive("privateAccount").getAsBoolean();
                     secUID = user.has("secUid") ? user.getAsJsonPrimitive("secUid").getAsString() : "";
                 }
-            }
 
-            if (userModule.has("stats")) {
-                JsonObject stats = userModule.getAsJsonObject("stats");
+                if (userInfo.has("stats")) {
+                    JsonObject stats = userInfo.getAsJsonObject("stats");
 
-                if (stats.size() == 1) {
-                    stats = stats.getAsJsonObject(stats.keySet().iterator().next());
                     followers = stats.has("followerCount") ? stats.getAsJsonPrimitive("followerCount").getAsLong() : 0;
                     following = stats.has("followingCount") ? stats.getAsJsonPrimitive("followingCount").getAsLong() : 0;
                     likes = stats.has("heartCount") ? stats.getAsJsonPrimitive("heartCount").getAsLong() : 0;
                 }
+
+
+                if (jsonObject.has("itemList") && parseVideos) {
+                    JsonObject itemModule = jsonObject.getAsJsonObject("itemList");
+
+                    if (itemModule.isEmpty()) return;
+
+                    for (String key : itemModule.keySet()) {
+                        posts.add(new TikTokVideo(itemModule.getAsJsonObject(key)));
+                    }
+                }
+            } else {
+                throw new MissingDataInfoException("User not found");
             }
-        }
-
-        if (jsonObject.has("ItemModule") && parseVideos) {
-            JsonObject itemModule = jsonObject.getAsJsonObject("ItemModule");
-
-            if (itemModule.isEmpty()) return;
-
-            for (String key : itemModule.keySet()) {
-                posts.add(new TikTokVideo(itemModule.getAsJsonObject(key)));
-            }
+        } else {
+            throw new MissingDataInfoException("User not found");
         }
     }
 }

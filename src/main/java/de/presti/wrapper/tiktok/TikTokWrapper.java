@@ -22,7 +22,7 @@ public class TikTokWrapper {
     /**
      * The ID of the element which contains all the information.
      */
-    static String elementId = "SIGI_STATE";
+    static String elementId = "__UNIVERSAL_DATA_FOR_REHYDRATION__";
 
     /**
      * The Base Url of the TikTok Website.
@@ -31,7 +31,8 @@ public class TikTokWrapper {
 
     /**
      * Retrieve information about a User.
-     * @param name The name of the user.
+     *
+     * @param name        The name of the user.
      * @param parseVideos If the videos of the user should be loaded into the object (takes a lot of time, if the users has a lot of them).
      * @return The User.
      * @throws IOException If the connection to the website fails.
@@ -46,6 +47,7 @@ public class TikTokWrapper {
 
     /**
      * Retrieve information about a User and load their videos.
+     *
      * @param name The name of the user.
      * @return The User.
      * @throws IOException If the connection to the website fails.
@@ -56,7 +58,8 @@ public class TikTokWrapper {
 
     /**
      * Retrieve information about a User.
-     * @param id The ID of the user.
+     *
+     * @param id          The ID of the user.
      * @param parseVideos If the videos of the user should be loaded into the object (takes a lot of time, if the users has a lot of them).
      * @return The User.
      * @throws IOException If the connection to the website fails.
@@ -67,6 +70,7 @@ public class TikTokWrapper {
 
     /**
      * Retrieve information about a User and load their videos.
+     *
      * @param id The ID of the user.
      * @return The User.
      * @throws IOException If the connection to the website fails.
@@ -77,8 +81,9 @@ public class TikTokWrapper {
 
     /**
      * Retrieve information about a Video.
+     *
      * @param user The name of the user.
-     * @param id The ID of the video.
+     * @param id   The ID of the video.
      * @return The Video.
      * @throws IOException If the connection to the website fails.
      */
@@ -92,6 +97,7 @@ public class TikTokWrapper {
 
     /**
      * Retrieve information about a Video.
+     *
      * @param id The ID of the video.
      * @return The Video.
      * @throws IOException If the connection to the website fails.
@@ -102,6 +108,7 @@ public class TikTokWrapper {
 
     /**
      * Extract results from the Website into a JsonObject usable.
+     *
      * @param path The path related to the wanted Object.
      * @return The JsonObject.
      * @throws IOException If the connection to the website fails.
@@ -115,6 +122,19 @@ public class TikTokWrapper {
             throw new MissingDataInfoException("Page does not contain the " + elementId + " element! Maybe updated their website? Open a Issue if this continues!");
         }
 
-        return JsonParser.parseString(data.data()).getAsJsonObject();
+        JsonObject jsonObject = JsonParser.parseString(data.data()).getAsJsonObject();
+
+        if (jsonObject.has("__DEFAULT_SCOPE__")) {
+            jsonObject = jsonObject.getAsJsonObject("__DEFAULT_SCOPE__");
+
+            // Remove unnecessary data
+            jsonObject.remove("webapp.app-context");
+            jsonObject.remove("webapp.biz-context");
+            jsonObject.remove("webapp.i18n-translation");
+            jsonObject.remove("webapp.a-b");
+            jsonObject.remove("seo.abtest");
+        }
+
+        return jsonObject;
     }
 }
