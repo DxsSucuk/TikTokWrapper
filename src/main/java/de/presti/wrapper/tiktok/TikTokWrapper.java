@@ -12,6 +12,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The Wrapper to retrieve information from TikTok.
@@ -19,122 +20,29 @@ import java.io.IOException;
 @Getter
 public class TikTokWrapper {
 
-    /**
-     * The ID of the element which contains all the information.
-     */
-    static String elementId = "__UNIVERSAL_DATA_FOR_REHYDRATION__";
-
-    /**
-     * The Base Url of the TikTok Website.
-     */
-    static String baseUrl = "https://www.tiktok.com/";
-
-    /**
-     * Retrieve information about a User.
-     *
-     * @param name        The name of the user.
-     * @param parseVideos If the videos of the user should be loaded into the object (takes a lot of time, if the users has a lot of them).
-     * @return The User.
-     * @throws IOException If the connection to the website fails.
-     */
-    public static TikTokUser getUser(String name, boolean parseVideos) throws IOException {
-        if (!name.startsWith("@")) {
-            name = "@" + name;
-        }
-
-        return new TikTokUser(parseElement(name), parseVideos);
+    public static TikTokUser getUser(String name) {
+        return null;
     }
 
-    /**
-     * Retrieve information about a User and load their videos.
-     *
-     * @param name The name of the user.
-     * @return The User.
-     * @throws IOException If the connection to the website fails.
-     */
-    public static TikTokUser getUser(String name) throws IOException {
-        return getUser(name, true);
+    public static TikTokUser getUser(long id) {
+        return null;
     }
 
-    /**
-     * Retrieve information about a User.
-     *
-     * @param id          The ID of the user.
-     * @param parseVideos If the videos of the user should be loaded into the object (takes a lot of time, if the users has a lot of them).
-     * @return The User.
-     * @throws IOException If the connection to the website fails.
-     */
-    public static TikTokUser getUser(long id, boolean parseVideos) throws IOException {
-        return new TikTokUser(parseElement("share/user/" + id), parseVideos);
+    public static TikTokUser getUser(String name, boolean parseVideos) {
+        return null;
     }
 
-    /**
-     * Retrieve information about a User and load their videos.
-     *
-     * @param id The ID of the user.
-     * @return The User.
-     * @throws IOException If the connection to the website fails.
-     */
-    public static TikTokUser getUser(long id) throws IOException {
-        return getUser(id, true);
+    public static TikTokUser getUser(long id, boolean parseVideos) {
+        return null;
     }
 
-    /**
-     * Retrieve information about a Video.
-     *
-     * @param user The name of the user.
-     * @param id   The ID of the video.
-     * @return The Video.
-     * @throws IOException If the connection to the website fails.
-     */
-    public static TikTokVideo getVideo(String user, String id) throws IOException {
-        if (!user.startsWith("@")) {
-            user = "@" + user;
-        }
-
-        return new TikTokVideo(parseElement(user + "/video/" + id));
+    public static TikTokVideo getVideo(String id) {
+        return null;
     }
 
-    /**
-     * Retrieve information about a Video.
-     *
-     * @param id The ID of the video.
-     * @return The Video.
-     * @throws IOException If the connection to the website fails.
-     */
-    public static TikTokVideo getVideo(String id) throws IOException {
-        return new TikTokVideo(parseElement("share/video/" + id));
+
+    public static TikTokVideo getVideos(long id) {
+        return null;
     }
 
-    /**
-     * Extract results from the Website into a JsonObject usable.
-     *
-     * @param path The path related to the wanted Object.
-     * @return The JsonObject.
-     * @throws IOException If the connection to the website fails.
-     */
-    private static JsonObject parseElement(String path) throws IOException {
-        Connection connection = Jsoup.connect(baseUrl + path + "?lang=en");
-        Document document = connection.get();
-        Element data = document.getElementById(elementId);
-
-        if (data == null) {
-            throw new MissingDataInfoException("Page does not contain the " + elementId + " element! Maybe updated their website? Open a Issue if this continues!");
-        }
-
-        JsonObject jsonObject = JsonParser.parseString(data.data()).getAsJsonObject();
-
-        if (jsonObject.has("__DEFAULT_SCOPE__")) {
-            jsonObject = jsonObject.getAsJsonObject("__DEFAULT_SCOPE__");
-
-            // Remove unnecessary data
-            jsonObject.remove("webapp.app-context");
-            jsonObject.remove("webapp.biz-context");
-            jsonObject.remove("webapp.i18n-translation");
-            jsonObject.remove("webapp.a-b");
-            jsonObject.remove("seo.abtest");
-        }
-
-        return jsonObject;
-    }
 }

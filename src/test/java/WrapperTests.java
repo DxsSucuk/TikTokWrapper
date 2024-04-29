@@ -35,4 +35,9 @@ public class WrapperTests {
         Assertions.assertDoesNotThrow(() -> TikTokWrapper.getVideo("7152957515582426373"));
     }
 
+    @Test
+    void successfulVideoCatalogLookup() {
+        Assertions.assertDoesNotThrow(() -> TikTokWrapper.getVideos(7130536971978392581L));
+    }
+
 }
