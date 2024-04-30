@@ -14,6 +14,9 @@ import org.jsoup.nodes.Element;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The Scrapper to retrieve information from TikTok.
+ */
 public class TikTokScrapper {
 
     /**

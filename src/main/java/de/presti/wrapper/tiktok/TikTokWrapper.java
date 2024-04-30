@@ -1,18 +1,13 @@
 package de.presti.wrapper.tiktok;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import de.presti.wrapper.tiktok.entities.TikTokUser;
 import de.presti.wrapper.tiktok.entities.TikTokVideo;
-import de.presti.wrapper.tiktok.exceptions.MissingDataInfoException;
+import de.presti.wrapper.tiktok.repo.TikTokResearchAPI;
+import de.presti.wrapper.tiktok.repo.TikTokScrapper;
 import lombok.Getter;
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
+import lombok.Setter;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * The Wrapper to retrieve information from TikTok.
@@ -20,28 +15,86 @@ import java.util.List;
 @Getter
 public class TikTokWrapper {
 
-    public static TikTokUser getUser(String name) {
+    @Setter
+    protected static TikTokResearchAPI tikTokResearchAPI;
+
+    /**
+     * Retrieve information about a User.
+     * @param name The name of the user.
+     * @return The User.
+     * @throws IOException If the connection to the website fails.
+     */
+    public static TikTokUser getUser(String name) throws IOException {
+        if (tikTokResearchAPI == null)
+            return TikTokScrapper.getUser(name);
+
+        return tikTokResearchAPI.getUser(name);
+    }
+
+    /**
+     * Retrieve information about a User.
+     * @param id The ID of the user.
+     * @return The User.
+     * @throws IOException If the connection to the website fails.
+     */
+    public static TikTokUser getUser(long id) throws IOException {
+        if (tikTokResearchAPI == null)
+            return TikTokScrapper.getUser(id);
+
+        return tikTokResearchAPI.getUser(String.valueOf(id));
+    }
+
+    /**
+     * Retrieve information about a User.
+     * @param name The name of the user.
+     * @param parseVideos If the videos of the user should be loaded into the object (takes a lot of time if the users have a lot of them).
+     * @return The User.
+     * @throws IOException If the connection to the website fails.
+     */
+    public static TikTokUser getUser(String name, boolean parseVideos) throws IOException {
+        if (tikTokResearchAPI == null)
+            return TikTokScrapper.getUser(name, parseVideos);
+
+        return tikTokResearchAPI.getUser(name);
+    }
+
+    /**
+     * Retrieve information about a User.
+     * @param id The ID of the user.
+     * @param parseVideos If the videos of the user should be loaded into the object (takes a lot of time, if the users has a lot of them).
+     * @return The User.
+     * @throws IOException If the connection to the website fails.
+     */
+    public static TikTokUser getUser(long id, boolean parseVideos) throws IOException {
+        if (tikTokResearchAPI == null)
+            return TikTokScrapper.getUser(id, parseVideos);
+
+        return tikTokResearchAPI.getUser(String.valueOf(id));
+    }
+
+    /**
+     * Retrieve information about a Video.
+     * @param id The ID of the Video.
+     * @return The Video.
+     * @throws IOException If the connection to the website fails.
+     */
+    public static TikTokVideo getVideo(String id) throws IOException {
+        if (tikTokResearchAPI == null)
+            return TikTokScrapper.getVideo(id);
+
         return null;
     }
 
-    public static TikTokUser getUser(long id) {
-        return null;
-    }
+    /**
+     * Retrieve information about a Video.
+     * @param id The ID of the Video.
+     * @return The Video.
+     * @throws IOException If the connection to the website fails.
+     */
+    public static TikTokVideo getVideos(long id) throws IOException {
+        if (tikTokResearchAPI == null)
+            return TikTokScrapper.getVideo(String.valueOf(id));
 
-    public static TikTokUser getUser(String name, boolean parseVideos) {
-        return null;
-    }
-
-    public static TikTokUser getUser(long id, boolean parseVideos) {
-        return null;
-    }
-
-    public static TikTokVideo getVideo(String id) {
-        return null;
-    }
-
-
-    public static TikTokVideo getVideos(long id) {
         return null;
     }
 

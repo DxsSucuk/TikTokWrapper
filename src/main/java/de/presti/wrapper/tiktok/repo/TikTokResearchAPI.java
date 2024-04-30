@@ -7,7 +7,6 @@ import de.presti.wrapper.tiktok.entities.TikTokUser;
 import de.presti.wrapper.tiktok.entities.TikTokVideo;
 import de.presti.wrapper.tiktok.exceptions.MissingDataInfoException;
 import de.presti.wrapper.tiktok.utility.RequestUtility;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +18,9 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * The API to retrieve information from TikTok.
+ */
 @NoArgsConstructor
 public class TikTokResearchAPI {
 
