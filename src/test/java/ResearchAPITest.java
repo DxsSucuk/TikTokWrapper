@@ -1,4 +1,3 @@
-import de.presti.wrapper.tiktok.TikTokWrapper;
 import de.presti.wrapper.tiktok.repo.TikTokResearchAPI;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
