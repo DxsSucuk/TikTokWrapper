@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The Wrapper to retrieve information from TikTok.
@@ -91,11 +92,37 @@ public class TikTokWrapper {
      * @return The Video.
      * @throws IOException If the connection to the website fails.
      */
-    public static TikTokVideo getVideos(long id) throws IOException {
+    public static TikTokVideo getVideo(long id) throws IOException {
         if (tikTokResearchAPI == null)
             return TikTokScrapper.getVideo(String.valueOf(id));
 
         return null;
+    }
+
+    /**
+     * Retrieve information about the videos of a User.
+     * @param username The Name of the User.
+     * @return The Videos.
+     * @throws IOException If the connection to the website fails.
+     */
+    public static List<TikTokVideo> getVideos(String username) throws IOException {
+        if (tikTokResearchAPI == null)
+            return TikTokScrapper.getVideos(username);
+
+        return tikTokResearchAPI.getVideos(username);
+    }
+
+    /**
+     * Retrieve information about the videos of a User.
+     * @param id The ID of the User.
+     * @return The Videos.
+     * @throws IOException If the connection to the website fails.
+     */
+    public static List<TikTokVideo> getVideos(long id) throws IOException {
+        if (tikTokResearchAPI == null)
+            return TikTokScrapper.getVideos(id);
+
+        return tikTokResearchAPI.getVideos(String.valueOf(id));
     }
 
 }

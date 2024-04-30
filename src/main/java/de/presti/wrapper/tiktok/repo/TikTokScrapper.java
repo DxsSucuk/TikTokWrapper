@@ -47,7 +47,7 @@ public class TikTokScrapper {
             name = "@" + name;
         }
 
-        return new TikTokUser(parseElement(name), parseVideos);
+        return TikTokUser.fromScraper(parseElement(name), parseVideos);
     }
 
     /**
@@ -70,7 +70,7 @@ public class TikTokScrapper {
      * @throws IOException If the connection to the website fails.
      */
     public static TikTokUser getUser(long id, boolean parseVideos) throws IOException {
-        return new TikTokUser(parseElement("share/user/" + id), parseVideos);
+        return TikTokUser.fromScraper(parseElement("share/user/" + id), parseVideos);
     }
 
     /**
@@ -121,7 +121,7 @@ public class TikTokScrapper {
             user = "@" + user;
         }
 
-        return new TikTokVideo(parseElement(user + "/video/" + id));
+        return TikTokVideo.fromScraper(parseElement(user + "/video/" + id));
     }
 
     /**
@@ -132,7 +132,7 @@ public class TikTokScrapper {
      * @throws IOException If the connection to the website fails.
      */
     public static TikTokVideo getVideo(String id) throws IOException {
-        return new TikTokVideo(parseElement("share/video/" + id));
+        return TikTokVideo.fromScraper(parseElement("share/video/" + id));
     }
 
     /**

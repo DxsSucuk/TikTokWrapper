@@ -116,16 +116,12 @@ public class TikTokVideo {
      */
     TikTokThumbnail cover;
 
-    /**
-     * Constructor to create a Video from a JsonObject.
-     * @param item The JsonObject to create the Video from.
-     */
-    public TikTokVideo(JsonObject item) {
-        super();
-
+    public static TikTokVideo fromScraper(JsonObject item) {
         if (item == null) {
             throw new MissingDataInfoException("Received null JsonObject for Video!");
         }
+
+        TikTokVideo tikTokVideo = new TikTokVideo();
 
         if (item.has("webapp.video-detail")) {
             item = item.getAsJsonObject("webapp.video-detail");
@@ -139,12 +135,13 @@ public class TikTokVideo {
                 if (item.has("itemStruct")) {
                     item = item.getAsJsonObject("itemStruct");
 
-                    parseFromStructure(item);
+                    tikTokVideo.parseFromStructure(item);
                 }
             } else {
                 throw new MissingDataInfoException("Video not found");
             }
         }
+        return tikTokVideo;
     }
 
     private void parseFromStructure(JsonObject item) {
