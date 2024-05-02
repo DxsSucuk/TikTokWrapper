@@ -107,7 +107,7 @@ public class TikTokResearchAPI {
         RequestUtility.Request request = RequestUtility.Request.builder()
                 .url(BASE_URL + "/video/query/?fields=display_name,bio_description,avatar_url,is_verified,follower_count,following_count,likes_count,video_count")
                 .bearerAuth(access_token)
-                .body(requestObject.getAsString())
+                .body(requestObject.toString())
                 .POST()
                 .build();
 

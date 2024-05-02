@@ -7,7 +7,7 @@ public class WrapperTests {
 
     @Test
     void failingUserLookup() {
-        Assertions.assertThrows(MissingDataInfoException.class, () -> TikTokWrapper.getUser("watgawgawhgawhz26125623q6t"));;
+        Assertions.assertThrows(MissingDataInfoException.class, () -> TikTokWrapper.getUser("watgawgawhgawhz26125623q6t"));
     }
 
     @Test

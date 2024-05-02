@@ -9,12 +9,17 @@ public class ResearchAPITest {
 
     @BeforeAll
     public static void setup() {
-        api = new TikTokResearchAPI("awd96yorysodw206", "g8B7QAFqVKwxYGa3ejvleBoNhrr0wQqi", "client_credentials");
+        api = new TikTokResearchAPI("key", "secret", "client_credentials");
     }
 
     @Test
     public void getUserInfo() {
         Assertions.assertDoesNotThrow(() -> api.getUser("ree6bot"));
+    }
+
+    @Test
+    public void getVideos() {
+        Assertions.assertDoesNotThrow(() -> api.getVideos("ree6bot"));
     }
 
 }
